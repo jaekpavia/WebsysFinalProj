@@ -1,3 +1,27 @@
+<?php
+
+session_start();
+
+$errors = [
+    'login' => $_SESSION['login_error'] ?? '',
+    'register' => $_SESSION['register_error'] ?? ''
+];
+
+$activeForm = $_SESSION['active_form'] ?? 'login';
+
+session_unset();
+
+function showError($error) {
+    return !empty($error) ? "<p class='error-message'>$error</p>" : '';
+}
+
+function isActiveForm($formName, $activeForm) {
+    return $formName === $activeForm ? 'active' : '';
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,10 +33,11 @@
 <body>
 
     <div class="login-container">
-        <div class="form-box active" id="login-form">
-        <form action="">
+        <div class="form-box <?= isActiveForm('login', $activeForm); ?>" id="login-form">
+        <form action="login_register.php" method="POST">
             <h1>Room Grid</h1>
             <h2>Log In</h2>
+            <?= showError($errors['login']); ?>
             <input type="email" id="email" name="email" placeholder="Email" required><br>
             <input type="password" id="password" name="password" placeholder="Password" required><br>
             <button name="login" type="submit">Log in</button>
@@ -20,10 +45,11 @@
         </form>
         </div>
       
-        <div class="form-box" id="register-form">
-        <form action="">
+        <div class="form-box <?= isActiveForm('register', $activeForm); ?>" id="register-form">
+        <form action="login_register.php" method="POST">
             <h1>Room Grid</h1>
             <h2>Register</h2>
+            <?= showError($errors['register']); ?>
             <input type="text" id="username" name="username" placeholder="Username" required><br>
             <input type="email" id="email" name="email" placeholder="Email" required><br>
             <input type="password" id="password" name="password" placeholder="Password" required><br>
