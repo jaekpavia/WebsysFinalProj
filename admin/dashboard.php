@@ -1,0 +1,402 @@
+<?php
+session_start();
+require_once '../config.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login-register/login.php");
+    exit();
+}
+
+if (isset($_POST['update_status'])) {
+    $documentId = $_POST['document_id'];
+    $newStatus = $_POST['status'];
+
+    $updateStatus = $conn->prepare("UPDATE documents SET status = ? WHERE id = ?");
+    $updateStatus->bind_param("si", $newStatus, $documentId);
+    $updateStatus->execute();
+
+    header("Location: dashboard.php");
+    exit();
+}
+
+if (isset($_POST['delete_document'])) {
+    $documentId = $_POST['document_id'];
+
+    $getFile = $conn->prepare("SELECT file_path FROM documents WHERE id = ?");
+    $getFile->bind_param("i", $documentId);
+    $getFile->execute();
+    $fileResult = $getFile->get_result();
+
+    if ($fileResult->num_rows > 0) {
+        $fileData = $fileResult->fetch_assoc();
+
+        if (!empty($fileData['file_path'])) {
+            $realFilePath = "../" . $fileData['file_path'];
+
+            if (file_exists($realFilePath)) {
+                unlink($realFilePath);
+            }
+        }
+    }
+
+    $deleteDocument = $conn->prepare("DELETE FROM documents WHERE id = ?");
+    $deleteDocument->bind_param("i", $documentId);
+    $deleteDocument->execute();
+
+    header("Location: dashboard.php");
+    exit();
+}
+
+if (isset($_POST['add_document'])) {
+    $trackingNumber = "DOC-" . date("Ymd") . "-" . rand(1000, 9999);
+    $title = trim($_POST['document_title']);
+    $description = trim($_POST['description']);
+    $sender = trim($_POST['sender']);
+    $recipient = trim($_POST['recipient']);
+    $status = $_POST['status'];
+
+    $fileName = null;
+    $filePath = null;
+
+    if (!empty($_FILES['document_file']['name'])) {
+        $uploadFolder = "../uploads/documents/";
+
+        if (!is_dir($uploadFolder)) {
+            mkdir($uploadFolder, 0777, true);
+        }
+
+        $originalFileName = basename($_FILES['document_file']['name']);
+        $fileExtension = strtolower(pathinfo($originalFileName, PATHINFO_EXTENSION));
+
+        $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
+
+        if (in_array($fileExtension, $allowedExtensions)) {
+            $safeFileName = "DOC_" . time() . "_" . rand(1000, 9999) . "." . $fileExtension;
+            $targetFile = $uploadFolder . $safeFileName;
+
+            if (move_uploaded_file($_FILES['document_file']['tmp_name'], $targetFile)) {
+                $fileName = $originalFileName;
+                $filePath = "uploads/documents/" . $safeFileName;
+            }
+        }
+    }
+
+    $insertDocument = $conn->prepare("
+        INSERT INTO documents 
+        (tracking_number, title, description, sender, recipient, status, file_name, file_path) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ");
+
+    $insertDocument->bind_param(
+        "ssssssss",
+        $trackingNumber,
+        $title,
+        $description,
+        $sender,
+        $recipient,
+        $status,
+        $fileName,
+        $filePath
+    );
+
+    $insertDocument->execute();
+
+    header("Location: dashboard.php");
+    exit();
+}
+
+$pageTitle = "Dashboard";
+$adminName = $_SESSION['name'] ?? "Admin";
+
+$totalDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents")->fetch_assoc()['total'];
+$pendingDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'Pending'")->fetch_assoc()['total'];
+$inProcessDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'In Process'")->fetch_assoc()['total'];
+$completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'Completed'")->fetch_assoc()['total'];
+
+$recentDocuments = $conn->query("
+    SELECT * FROM documents 
+    ORDER BY date_submitted DESC 
+    LIMIT 5
+");
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($pageTitle); ?> | SEC-LEO Document Tracking System</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+    <main class="main-content">
+
+        <header class="page-header">
+            <div>
+                <p class="page-label">SEC-LEO Document Tracking System</p>
+                <h1>Dashboard</h1>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" class="add-document-btn" onclick="openDocumentPanel()">Add Document</button>
+                <a href="../logout.php" class="logout-btn">Logout</a>
+            </div>
+        </header>
+
+        <section class="admin-card">
+            <div>
+                <h2>Welcome, <?php echo htmlspecialchars($adminName); ?></h2>
+                <p>Manage and monitor document records from one dashboard.</p>
+            </div>
+        </section>
+
+        <section class="overview-section">
+            <div class="section-title">
+                <h2>Document Overview</h2>
+            </div>
+
+            <div class="summary-cards">
+                <article class="summary-card">
+                    <span>Total Documents</span>
+                    <h3><?php echo $totalDocuments; ?></h3>
+                    <p>All recorded documents</p>
+                </article>
+
+                <article class="summary-card">
+                    <span>Pending</span>
+                    <h3><?php echo $pendingDocuments; ?></h3>
+                    <p>Waiting for action</p>
+                </article>
+
+                <article class="summary-card">
+                    <span>In Process</span>
+                    <h3><?php echo $inProcessDocuments; ?></h3>
+                    <p>Currently being handled</p>
+                </article>
+
+                <article class="summary-card">
+                    <span>Completed</span>
+                    <h3><?php echo $completedDocuments; ?></h3>
+                    <p>Successfully processed</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="documents-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Recent Documents</h2>
+                    <p>Latest document records will appear here.</p>
+                </div>
+            </div>
+
+            <div class="document-list">
+                <?php if ($recentDocuments->num_rows === 0) { ?>
+                    <div class="empty-state">
+                        <h3>No documents added yet.</h3>
+                        <p>Click the Add Document button to create a document record.</p>
+                    </div>
+                <?php } else { ?>
+                    <?php while ($document = $recentDocuments->fetch_assoc()) { ?>
+                        <div class="document-row">
+                            <div>
+                                <h3><?php echo htmlspecialchars($document["title"]); ?></h3>
+                                <p><?php echo htmlspecialchars($document["tracking_number"]); ?></p>
+                            </div>
+
+                            <form class="status-form" action="dashboard.php" method="POST">
+                                <input type="hidden" name="document_id" value="<?php echo $document['id']; ?>">
+
+                                <select name="status" onchange="this.form.submit()">
+                                    <option value="Pending" <?php echo $document["status"] === "Pending" ? "selected" : ""; ?>>
+                                        Pending
+                                    </option>
+
+                                    <option value="In Process" <?php echo $document["status"] === "In Process" ? "selected" : ""; ?>>
+                                        In Process
+                                    </option>
+
+                                    <option value="Completed" <?php echo $document["status"] === "Completed" ? "selected" : ""; ?>>
+                                        Completed
+                                    </option>
+                                </select>
+
+                                <input type="hidden" name="update_status" value="1">
+                            </form>
+
+                            <span><?php echo htmlspecialchars($document["date_submitted"]); ?></span>
+
+                            <div class="document-actions">
+                                <button
+                                    type="button"
+                                    class="details-btn"
+                                    onclick='openDetailsPanel(
+                                        <?php echo json_encode($document["tracking_number"]); ?>,
+                                        <?php echo json_encode($document["title"]); ?>,
+                                        <?php echo json_encode($document["description"]); ?>,
+                                        <?php echo json_encode($document["sender"]); ?>,
+                                        <?php echo json_encode($document["recipient"]); ?>,
+                                        <?php echo json_encode($document["status"]); ?>,
+                                        <?php echo json_encode($document["date_submitted"]); ?>,
+                                        <?php echo json_encode($document["file_path"] ?? ""); ?>
+                                    )'
+                                >
+                                    View Details
+                                </button>
+
+                                <form action="dashboard.php" method="POST" onsubmit="return confirm('Delete this document?');">
+                                    <input type="hidden" name="document_id" value="<?php echo $document['id']; ?>">
+                                    <button type="submit" name="delete_document" class="delete-btn">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="panel-overlay" id="panel-overlay" onclick="closeDocumentPanel()"></div>
+
+    <aside class="add-document-panel" id="add-document-panel">
+        <div class="panel-top">
+            <div>
+                <h2>Add Document</h2>
+                <p>Create a new document record and attach a file.</p>
+            </div>
+
+            <button type="button" class="close-panel-btn" onclick="closeDocumentPanel()">×</button>
+        </div>
+
+        <form class="document-form" action="dashboard.php" method="POST" enctype="multipart/form-data">
+            <label for="document-title">Document Title</label>
+            <input type="text" id="document-title" name="document_title" placeholder="Enter document title" required>
+
+            <label for="document-description">Description</label>
+            <textarea id="document-description" name="description" placeholder="Enter short description"></textarea>
+
+            <label for="sender">Sender</label>
+            <input type="text" id="sender" name="sender" placeholder="Enter sender name" required>
+
+            <label for="recipient">Recipient</label>
+            <input type="text" id="recipient" name="recipient" placeholder="Enter recipient name" required>
+
+            <label for="status">Status</label>
+            <select id="status" name="status" required>
+                <option value="Pending">Pending</option>
+                <option value="In Process">In Process</option>
+                <option value="Completed">Completed</option>
+            </select>
+
+            <label for="document-file">Attach File</label>
+            <input type="file" id="document-file" name="document_file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="closeDocumentPanel()">Cancel</button>
+                <button type="submit" name="add_document" class="save-btn">Save Document</button>
+            </div>
+        </form>
+    </aside>
+
+    <div class="details-overlay" id="details-overlay" onclick="closeDetailsPanel()"></div>
+
+    <aside class="details-panel" id="details-panel">
+        <div class="details-top">
+            <div>
+                <h2>Document Details</h2>
+                <p>Full information about this document record.</p>
+            </div>
+
+            <button type="button" class="close-details-btn" onclick="closeDetailsPanel()">×</button>
+        </div>
+
+        <div class="details-card">
+            <div class="detail-item">
+                <span>Tracking Number</span>
+                <p id="detail-tracking-number"></p>
+            </div>
+
+            <div class="detail-item">
+                <span>Document Title</span>
+                <p id="detail-title"></p>
+            </div>
+
+            <div class="detail-item">
+                <span>Description</span>
+                <p id="detail-description"></p>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span>Sender</span>
+                    <p id="detail-sender"></p>
+                </div>
+
+                <div class="detail-item">
+                    <span>Recipient</span>
+                    <p id="detail-recipient"></p>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span>Status</span>
+                    <p id="detail-status"></p>
+                </div>
+
+                <div class="detail-item">
+                    <span>Date Submitted</span>
+                    <p id="detail-date"></p>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <span>Attached File</span>
+                <p id="detail-file"></p>
+            </div>
+        </div>
+    </aside>
+
+    <script>
+        function openDocumentPanel() {
+            document.getElementById("add-document-panel").classList.add("show");
+            document.getElementById("panel-overlay").classList.add("show");
+        }
+
+        function closeDocumentPanel() {
+            document.getElementById("add-document-panel").classList.remove("show");
+            document.getElementById("panel-overlay").classList.remove("show");
+        }
+
+        function openDetailsPanel(trackingNumber, title, description, sender, recipient, status, dateSubmitted, filePath) {
+            document.getElementById("detail-tracking-number").textContent = trackingNumber;
+            document.getElementById("detail-title").textContent = title;
+            document.getElementById("detail-description").textContent = description || "No description provided.";
+            document.getElementById("detail-sender").textContent = sender;
+            document.getElementById("detail-recipient").textContent = recipient;
+            document.getElementById("detail-status").textContent = status;
+            document.getElementById("detail-date").textContent = dateSubmitted;
+
+            if (filePath) {
+                document.getElementById("detail-file").innerHTML = `<a href="../${filePath}" target="_blank">Open attached file</a>`;
+            } else {
+                document.getElementById("detail-file").textContent = "No file attached.";
+            }
+
+            document.getElementById("details-panel").classList.add("show");
+            document.getElementById("details-overlay").classList.add("show");
+        }
+
+        function closeDetailsPanel() {
+            document.getElementById("details-panel").classList.remove("show");
+            document.getElementById("details-overlay").classList.remove("show");
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 $errors = [
@@ -9,59 +8,83 @@ $errors = [
 
 $activeForm = $_SESSION['active_form'] ?? 'login';
 
-session_unset();
+unset($_SESSION['login_error']);
+unset($_SESSION['register_error']);
+unset($_SESSION['active_form']);
 
-function showError($error) {
-    return !empty($error) ? "<p class='error-message'>$error</p>" : '';
+function showError($error)
+{
+    if (!empty($error)) {
+        return "<p class='error-message'>" . htmlspecialchars($error) . "</p>";
+    }
+
+    return '';
 }
 
-function isActiveForm($formName, $activeForm) {
+function isActiveForm($formName, $activeForm)
+{
     return $formName === $activeForm ? 'active' : '';
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Management</title>
-    <link rel="stylesheet" href="../login-register/login.css">
+    <title>SEC-LEO Admin Login</title>
+    <link rel="stylesheet" href="login.css">
 </head>
+
 <body>
 
     <div class="login-container">
+
         <div class="form-box <?= isActiveForm('login', $activeForm); ?>" id="login-form">
-        <form action="login_register.php" method="POST">
-            <h1>Room Grid</h1>
-            <h2>Log In</h2>
-            <?= showError($errors['login']); ?>
-            <input type="email" id="email" name="email" placeholder="Email" required><br>
-            <input type="password" id="password" name="password" placeholder="Password" required><br>
-            <button name="login" type="submit">Log in</button>
-           <p> Don't have an account? <a href="#" onclick="showForm('register-form')">Register</a></p>
-        </form>
+            <form action="login_register.php" method="POST">
+                <h1>SEC-LEO Document Tracking System</h1>
+                <h2>Admin Log In</h2>
+                <p class="form-subtitle">Sign in to continue to your dashboard</p>
+
+                <?= showError($errors['login']); ?>
+
+                <input type="email" id="login-email" name="email" placeholder="Admin Email" required>
+                <input type="password" id="login-password" name="password" placeholder="Password" required>
+
+                <button name="login" type="submit">Log in</button>
+
+                <p>
+                    Don't have an admin account?
+                    <a href="#" onclick="showForm('register-form'); return false;">Register</a>
+                </p>
+            </form>
         </div>
-      
+
         <div class="form-box <?= isActiveForm('register', $activeForm); ?>" id="register-form">
-        <form action="login_register.php" method="POST">
-            <h1>Room Grid</h1>
-            <h2>Register</h2>
-            <?= showError($errors['register']); ?>
-            <input type="text" id="username" name="username" placeholder="Username" required><br>
-            <input type="email" id="email" name="email" placeholder="Email" required><br>
-            <input type="password" id="password" name="password" placeholder="Password" required><br>
-            <select name="role" id="role">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-            </select>
-            <button name="register" type="submit">Register</button>
-           <p> Already have an account? <a href="#" onclick="showForm('login-form')">Log in</a></p>
-        </form>
+            <form action="login_register.php" method="POST">
+                <h1>SEC-LEO Document Tracking System</h1>
+                <h2>Admin Register</h2>
+                <p class="form-subtitle">Create an admin account to access the system</p>
+
+                <?= showError($errors['register']); ?>
+
+                <input type="text" id="register-name" name="name" placeholder="Admin Name" required>
+                <input type="email" id="register-email" name="email" placeholder="Admin Email" required>
+                <input type="password" id="register-password" name="password" placeholder="Password" required>
+
+                <button name="register" type="submit">Register</button>
+
+                <p>
+                    Already have an admin account?
+                    <a href="#" onclick="showForm('login-form'); return false;">Log in</a>
+                </p>
+            </form>
         </div>
+
     </div>
-    <script src="../login-register/login.js"></script>
+
+    <script src="login.js"></script>
 </body>
+
 </html>

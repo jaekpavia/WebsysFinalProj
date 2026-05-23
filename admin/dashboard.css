@@ -1,0 +1,588 @@
+/* reset default spacing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+/* soft app background */
+body {
+  min-height: 100vh;
+  background: #eeeeec;
+  color: #181818;
+}
+
+/* main dashboard container */
+.main-content {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 34px 0;
+}
+
+/* header layout */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+/* small system label */
+.page-label {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* dashboard title */
+.page-header h1 {
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+
+/* header buttons */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* add document button */
+.add-document-btn {
+  height: 42px;
+  padding: 0 18px;
+  background: #0f5132;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* add button hover */
+.add-document-btn:hover {
+  background: #0b3d26;
+}
+
+/* logout button */
+.logout-btn {
+  height: 42px;
+  padding: 0 18px;
+  background: #ffffff;
+  color: #333;
+  border: 1px solid #deded9;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* logout hover */
+.logout-btn:hover {
+  background: #f7f7f5;
+}
+
+/* welcome card */
+.admin-card {
+  background: #f7f7f5;
+  border: 1px solid #deded9;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* welcome heading */
+.admin-card h2 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* welcome text */
+.admin-card p {
+  color: #777;
+  font-size: 14px;
+}
+
+/* overview wrapper */
+.overview-section {
+  background: #f7f7f5;
+  border: 1px solid #deded9;
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+/* overview title */
+.section-title h2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+/* stat cards grid */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* stat card */
+.summary-card {
+  background: #ffffff;
+  border: 1px solid #e1e1dc;
+  border-radius: 14px;
+  padding: 16px;
+  min-height: 112px;
+}
+
+/* stat label */
+.summary-card span {
+  font-size: 12px;
+  color: #777;
+}
+
+/* stat number */
+.summary-card h3 {
+  font-size: 26px;
+  font-weight: 500;
+  margin: 7px 0;
+}
+
+/* stat note */
+.summary-card p {
+  font-size: 12px;
+  color: #777;
+}
+
+/* documents section */
+.documents-panel {
+  background: #f7f7f5;
+  border: 1px solid #deded9;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+/* documents heading */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+/* recent title */
+.panel-header h2 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* recent subtitle */
+.panel-header p {
+  font-size: 13px;
+  color: #777;
+  margin-top: 4px;
+}
+
+/* document list spacing */
+.document-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* empty state card */
+.empty-state {
+  background: #ffffff;
+  border: 1px solid #e1e1dc;
+  border-radius: 14px;
+  padding: 38px;
+  text-align: center;
+}
+
+/* empty state title */
+.empty-state h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* empty state text */
+.empty-state p {
+  color: #777;
+  font-size: 14px;
+}
+
+/* document row */
+.document-row {
+  background: #ffffff;
+  border: 1px solid #e1e1dc;
+  border-radius: 14px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1fr 120px 150px 200px;
+  align-items: center;
+  gap: 12px;
+}
+
+/* document title */
+.document-row h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* tracking number */
+.document-row p {
+  font-size: 13px;
+  color: #777;
+}
+
+/* row text details */
+.document-row span {
+  font-size: 13px;
+  color: #555;
+}
+
+/* status form reset */
+.status-form {
+  margin: 0;
+}
+
+/* status dropdown */
+.status-form select {
+  width: 120px;
+  height: 34px;
+  border: 1px solid #deded9;
+  background: #ffffff;
+  color: #333;
+  border-radius: 9px;
+  padding: 0 10px;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* status focus */
+.status-form select:focus {
+  border-color: #0f5132;
+}
+
+/* row action group */
+.document-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* action forms */
+.document-actions form {
+  margin: 0;
+}
+
+/* view details button */
+.details-btn {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #cfe4d8;
+  background: #f0f7f3;
+  color: #0f5132;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* details hover */
+.details-btn:hover {
+  background: #e4f1ea;
+}
+
+/* soft delete button */
+.delete-btn {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #f0c8c4;
+  background: #fff5f4;
+  color: #b42318;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* delete hover */
+.delete-btn:hover {
+  background: #ffe9e7;
+  border-color: #e7aaa4;
+}
+
+/* shared panel overlay */
+.panel-overlay,
+.details-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(24, 24, 24, 0.28);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s ease;
+  z-index: 900;
+}
+
+/* visible overlay */
+.panel-overlay.show,
+.details-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* shared side panels */
+.add-document-panel,
+.details-panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  height: calc(100vh - 32px);
+  background: #f7f7f5;
+  border: 1px solid #deded9;
+  border-radius: 20px;
+  padding: 18px;
+  transform: translateX(115%);
+  transition: 0.3s ease;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+/* add panel width */
+.add-document-panel {
+  width: min(430px, calc(100% - 32px));
+}
+
+/* details panel width */
+.details-panel {
+  width: min(460px, calc(100% - 32px));
+}
+
+/* panel open state */
+.add-document-panel.show,
+.details-panel.show {
+  transform: translateX(0);
+}
+
+/* shared panel heading */
+.panel-top,
+.details-top {
+  background: #ffffff;
+  border: 1px solid #e1e1dc;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+/* panel titles */
+.panel-top h2,
+.details-top h2 {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+/* panel subtitles */
+.panel-top p,
+.details-top p {
+  font-size: 14px;
+  color: #777;
+}
+
+/* close panel buttons */
+.close-panel-btn,
+.close-details-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: #f7f7f5;
+  border-radius: 10px;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* close button hover */
+.close-panel-btn:hover,
+.close-details-btn:hover {
+  background: #eeeeec;
+}
+
+/* add form card */
+.document-form {
+  background: #ffffff;
+  border: 1px solid #e1e1dc;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+/* form labels */
+.document-form label {
+  display: block;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 7px;
+}
+
+/* form fields */
+.document-form input,
+.document-form select,
+.document-form textarea {
+  width: 100%;
+  border: 1px solid #deded9;
+  background: #f7f7f5;
+  border-radius: 12px;
+  padding: 0 14px;
+  outline: none;
+  color: #181818;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+/* input height */
+.document-form input,
+.document-form select {
+  height: 44px;
+}
+
+/* textarea height */
+.document-form textarea {
+  min-height: 105px;
+  padding-top: 12px;
+  resize: vertical;
+}
+
+/* active fields */
+.document-form input:focus,
+.document-form select:focus,
+.document-form textarea:focus {
+  border-color: #0f5132;
+  background: #ffffff;
+}
+
+/* form button row */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* cancel button */
+.cancel-btn {
+  flex: 1;
+  height: 44px;
+  border: 1px solid #deded9;
+  background: #ffffff;
+  color: #333;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* cancel hover */
+.cancel-btn:hover {
+  background: #f7f7f5;
+}
+
+/* save button */
+.save-btn {
+  flex: 1;
+  height: 44px;
+  border: none;
+  background: #0f5132;
+  color: #ffffff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* save hover */
+.save-btn:hover {
+  background: #0b3d26;
+}
+
+/* details card */
+.details-card {
+  background: #ffffff;
+  border: 1px solid #e1e1dc;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+/* detail spacing */
+.detail-item {
+  margin-bottom: 16px;
+}
+
+/* detail label */
+.detail-item span {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+/* detail value */
+.detail-item p {
+  font-size: 14px;
+  color: #181818;
+  line-height: 1.5;
+}
+
+/* two-column details */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* file link in details */
+.detail-item a {
+  color: #0f5132;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* file link hover */
+.detail-item a:hover {
+  text-decoration: underline;
+}
+
+/* tablet layout */
+@media (max-width: 900px) {
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .document-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .document-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}

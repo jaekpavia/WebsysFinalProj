@@ -1,106 +1,150 @@
+/* reset default spacing */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, Arial, Helvetica, sans-serif;
 }
 
+/* soft page background */
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
-    color: #333;
+  min-height: 100vh;
+  background: #eeeeec;
+  color: #181818;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
 }
 
+/* login page width */
 .login-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 15px;
+  width: min(100%, 440px);
 }
 
+/* outer form shell */
 .form-box {
-    width: 100%;
-    max-width: 450px;
-    padding: 35px 30px; 
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
-    display: none;
+  background: #f7f7f5;
+  border: 1px solid #deded9;
+  border-radius: 20px;
+  padding: 18px;
+  display: none;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
 }
 
+/* show selected form */
 .form-box.active {
-    display: block;
+  display: block;
 }
 
-h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 34px;
-    font-weight: 700;
+/* white form card */
+.form-box form {
+  background: #ffffff;
+  border: 1px solid #e1e1dc;
+  border-radius: 16px;
+  padding: 32px;
 }
 
-input, select {
-    width: 100%;
-    padding: 14px 12px; 
-    background: #eee;
-    border-radius: 6px;
-    border: none;  
-    outline: none; 
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 20px;
+/* system name */
+.form-box h1 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f5132;
+  line-height: 1.3;
+  margin-bottom: 24px;
 }
 
+/* main form title */
+.form-box h2 {
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -1px;
+  color: #181818;
+  margin-bottom: 8px;
+}
 
+/* little form description */
+.form-subtitle {
+  text-align: left;
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* input and select style */
+input,
+select {
+  width: 100%;
+  height: 46px;
+  border: 1px solid #deded9;
+  background: #f7f7f5;
+  border-radius: 12px;
+  padding: 0 14px;
+  outline: none;
+  color: #181818;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+/* placeholder color */
 input::placeholder {
-    color: #888;
-    font-weight: 400;
+  color: #8a8a8a;
 }
 
+/* active field look */
+input:focus,
+select:focus {
+  border-color: #0f5132;
+  background: #ffffff;
+}
+
+/* login and register button */
 button {
-    width: 100%;
-    padding: 14px;
-    background: #7494ec;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    color: #fff;
-    font-weight: 500;
-    margin-bottom: 20px;
-    transition: background-color 0.3s ease; 
+  width: 100%;
+  height: 46px;
+  border: none;
+  background: #0f5132;
+  color: #ffffff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 4px;
+  margin-bottom: 18px;
 }
 
+/* darker button hover */
 button:hover {
-    background: #6884d3;
+  background: #0b3d26;
 }
 
+/* bottom helper text */
 p {
-    text-align: center;
-    font-size: 14.5px;
-    color: #444;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
 }
 
+/* form switch link */
 p a {
-    color: #7494ec;
-    text-decoration: none;
-    font-weight: 500;
+  color: #0f5132;
+  font-weight: 600;
+  text-decoration: none;
 }
 
+/* simple link hover */
 p a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
+/* error alert */
 .error-message {
-    padding: 12px;
-    background: #f8d7da;
-    border-radius: 6px;
-    font-size: 16px;
-    color: #a42834;
-    text-align: center;
-    margin-bottom: 20px;
+  background: #fff3f3;
+  border: 1px solid #f2c4c4;
+  color: #b42318;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 16px;
 }
