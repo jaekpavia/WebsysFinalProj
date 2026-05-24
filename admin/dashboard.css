@@ -587,6 +587,24 @@ body {
   }
 }
 
+.document-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  max-height: 400px;   /* controls height */
+  overflow-y: auto;    /* enables scroll */
+}
+
+.document-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.document-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
 /* search container */
 .search-bar {
   display: flex;

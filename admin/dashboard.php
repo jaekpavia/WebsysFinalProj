@@ -168,7 +168,6 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
             $recentDocuments = $conn->query("
                 SELECT * FROM documents
                 ORDER BY date_submitted DESC
-                LIMIT 5
             ");
         }
 
