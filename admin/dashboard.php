@@ -202,7 +202,7 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
             <div class="panel-header">
                 
                 <div>
-                    <h2>Recent Documents</h2>
+                    <h2>All Documents</h2>
                     <p>Latest document records will appear here.</p>
                 </div>
 
@@ -263,8 +263,7 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
                                         <?php echo json_encode($document["status"]); ?>,
                                         <?php echo json_encode($document["date_submitted"]); ?>,
                                         <?php echo json_encode($document["file_path"] ?? ""); ?>
-                                    )'
-                                >
+                                    )'>
                                     View Details
                                 </button>
 
@@ -298,20 +297,13 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
             <input type="text" id="document-title" name="document_title" placeholder="Enter document title" required>
 
             <label for="document-description">Description</label>
-            <textarea id="document-description" name="description" placeholder="Enter short description"></textarea>
+            <textarea id="document-description" name="description" placeholder="Enter document description"></textarea>
 
             <label for="sender">Sender</label>
-            <input type="text" id="sender" name="sender" placeholder="Enter sender name" required>
+            <input type="text" id="sender" name="sender" placeholder="Enter sender name or office" required>
 
             <label for="recipient">Recipient</label>
-            <input type="text" id="recipient" name="recipient" placeholder="Enter recipient name" required>
-
-            <label for="status">Status</label>
-            <select id="status" name="status" required>
-                <option value="Pending">Pending</option>
-                <option value="In Process">In Process</option>
-                <option value="Completed">Completed</option>
-            </select>
+            <input type="text" id="recipient" name="recipient" placeholder="Enter recipient name or office" required>
 
             <label for="document-file">Attach File</label>
             <input type="file" id="document-file" name="document_file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
@@ -382,42 +374,7 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
         </div>
     </aside>
 
-    <script>
-        function openDocumentPanel() {
-            document.getElementById("add-document-panel").classList.add("show");
-            document.getElementById("panel-overlay").classList.add("show");
-        }
-
-        function closeDocumentPanel() {
-            document.getElementById("add-document-panel").classList.remove("show");
-            document.getElementById("panel-overlay").classList.remove("show");
-        }
-
-        function openDetailsPanel(trackingNumber, title, description, sender, recipient, status, dateSubmitted, filePath) {
-            document.getElementById("detail-tracking-number").textContent = trackingNumber;
-            document.getElementById("detail-title").textContent = title;
-            document.getElementById("detail-description").textContent = description || "No description provided.";
-            document.getElementById("detail-sender").textContent = sender;
-            document.getElementById("detail-recipient").textContent = recipient;
-            document.getElementById("detail-status").textContent = status;
-            document.getElementById("detail-date").textContent = dateSubmitted;
-
-            if (filePath) {
-                document.getElementById("detail-file").innerHTML = `<a href="../${filePath}" target="_blank">Open attached file</a>`;
-            } else {
-                document.getElementById("detail-file").textContent = "No file attached.";
-            }
-
-            document.getElementById("details-panel").classList.add("show");
-            document.getElementById("details-overlay").classList.add("show");
-        }
-
-        function closeDetailsPanel() {
-            document.getElementById("details-panel").classList.remove("show");
-            document.getElementById("details-overlay").classList.remove("show");
-        }
-    </script>
-
+    <script src="script.js"></script>
 </body>
 
 </html>
