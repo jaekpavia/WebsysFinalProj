@@ -113,11 +113,24 @@ $pendingDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE 
 $inProcessDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'In Process'")->fetch_assoc()['total'];
 $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'Completed'")->fetch_assoc()['total'];
 
-$recentDocuments = $conn->query("
-    SELECT * FROM documents 
-    ORDER BY date_submitted DESC 
-    LIMIT 5
-");
+    $search = $_GET['search'] ?? '';
+
+        if (!empty($search)) {
+            $search = $conn->real_escape_string($search);
+
+            $recentDocuments = $conn->query("
+                SELECT * FROM documents
+                WHERE title LIKE '%$search%'
+                ORDER BY date_submitted DESC
+            ");
+        } else {
+            $recentDocuments = $conn->query("
+                SELECT * FROM documents
+                ORDER BY date_submitted DESC
+                LIMIT 5
+            ");
+        }
+
 ?>
 
 <!DOCTYPE html>
@@ -187,11 +200,19 @@ $recentDocuments = $conn->query("
 
         <section class="documents-panel">
             <div class="panel-header">
+                
                 <div>
                     <h2>Recent Documents</h2>
                     <p>Latest document records will appear here.</p>
                 </div>
+
+                 <form method="GET" action="" class="search-bar">
+                    <input type="text" class="search" name="search" placeholder="Search document..." value="<?php echo htmlspecialchars($search); ?>">
+                    <button type="submit">Search</button>
+                 </form>
             </div>
+
+           
 
             <div class="document-list">
                 <?php if ($recentDocuments->num_rows === 0) { ?>

@@ -586,3 +586,46 @@ body {
     flex-wrap: wrap;
   }
 }
+
+/* search container */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1px;
+  max-width: 350px; 
+}
+
+/* search input */
+.search-bar .search {
+  flex: 1;
+  height: 44px;
+  border: 1px solid #deded9;
+  background: #f7f7f5;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 14px;
+  outline: none;
+}
+
+/* focus effect */
+.search-bar .search:focus {
+  border-color: #0f5132;
+  background: #ffffff;
+}
+
+/* button */
+.search-bar button {
+  height: 44px;
+  padding: 0 18px;
+  border: none;
+  background: #0f5132;
+  color: #ffffff;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* hover */
+.search-bar button:hover {
+  background: #0b3d26;
+}
