@@ -359,13 +359,7 @@ if (!empty($search)) {
             </label>
         </div>
 
-    <div class="form-actions">
-        <button type="button" class="cancel-btn" onclick="closeDocumentPanel()">Cancel</button>
-        <button type="submit" name="add_document" class="save-btn">Save Document</button>
-    </div>
-</form>
-
-            <div class="form-actions">
+        <div class="form-actions">
                 <button type="button" class="cancel-btn" onclick="closeDocumentPanel()">Cancel</button>
                 <button type="submit" name="add_document" class="save-btn">Save Document</button>
             </div>
