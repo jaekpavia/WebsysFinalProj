@@ -61,3 +61,16 @@
             document.getElementById('delete-modal').classList.remove('show');
             document.getElementById('delete-overlay').classList.remove('show');
         }
+
+        function openHardDeleteModal(id, title) {
+            document.getElementById('hard-delete-id').value = id;
+            document.getElementById('hard-delete-doc-title').textContent = title;
+    
+            document.getElementById('hard-delete-modal').classList.add('show');
+        document.getElementById('hard-delete-overlay').classList.add('show');
+        }
+
+        function closeHardDeleteModal() {
+            document.getElementById('hard-delete-modal').classList.remove('show');
+            document.getElementById('hard-delete-overlay').classList.remove('show');
+        }

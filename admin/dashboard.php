@@ -453,7 +453,7 @@ if (!empty($search)) {
 <div class="delete-modal" id="delete-modal">
     <div>
         <h2>Delete Document?</h2>
-        <p>Are you sure you want to delete <strong id="delete-doc-title"></strong>? This action cannot be undone.</p>
+        <p>Are you sure you want to delete <strong id="delete-doc-title"></strong>? This will put the file in the recycle bin.</p>
     </div>
 
     <form action="dashboard.php" method="POST">

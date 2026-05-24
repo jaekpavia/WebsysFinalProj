@@ -100,10 +100,12 @@ $trashedDocuments = $conn->query("SELECT * FROM documents WHERE is_deleted = 1 O
                                     <button type="submit" name="restore_document" class="restore-btn">Restore</button>
                                 </form>
 
-                                <form action="recycle_bin.php" method="POST" style="margin: 0;" onsubmit="return confirm('PERMANENTLY delete this document? This cannot be undone.');">
-                                    <input type="hidden" name="document_id" value="<?php echo $document['id']; ?>">
-                                    <button type="submit" name="hard_delete" class="delete-btn">Permanent Delete</button>
-                                </form>
+                                <button 
+                                    type="button" 
+                                    class="delete-btn" 
+                                    onclick="openHardDeleteModal(<?php echo $document['id']; ?>, '<?php echo htmlspecialchars($document['title'], ENT_QUOTES, 'UTF-8'); ?>')">
+                                    Permanent Delete
+                                </button>
                             </div>
                         </div>
                     <?php } ?>
@@ -111,5 +113,23 @@ $trashedDocuments = $conn->query("SELECT * FROM documents WHERE is_deleted = 1 O
             </div>
         </section>
     </main>
+    <div class="delete-overlay" id="hard-delete-overlay" onclick="closeHardDeleteModal()"></div>
+    
+    <div class="delete-modal" id="hard-delete-modal">
+        <div>
+            <h2>Permanently Destroy?</h2>
+            <p>Are you sure you want to completely erase <strong id="hard-delete-doc-title"></strong>? This will delete the database record and the attached file forever.</p>
+        </div>
+
+        <form action="recycle_bin.php" method="POST">
+            <input type="hidden" id="hard-delete-id" name="document_id">
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="closeHardDeleteModal()">Cancel</button>
+                <button type="submit" name="hard_delete" class="delete-confirm-btn">Yes, Destroy It</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
