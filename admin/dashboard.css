@@ -756,3 +756,20 @@ body {
 .delete-confirm-btn:hover {
   background: #911b12;
 }
+
+/* restore button */
+.restore-btn {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #cce5ff;
+  background: #e8f4ff;
+  color: #004085;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.restore-btn:hover {
+  background: #d6ebff;
+}
