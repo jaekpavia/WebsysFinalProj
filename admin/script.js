@@ -68,12 +68,6 @@ function openDeleteModal(id, title) {
   document.getElementById("delete-overlay").classList.add("show");
 }
 
-<<<<<<< HEAD
-function closeDeleteModal() {
-  document.getElementById("delete-modal").classList.remove("show");
-  document.getElementById("delete-overlay").classList.remove("show");
-}
-=======
         function closeDeleteModal() {
             document.getElementById('delete-modal').classList.remove('show');
             document.getElementById('delete-overlay').classList.remove('show');
@@ -91,4 +85,3 @@ function closeDeleteModal() {
             document.getElementById('hard-delete-modal').classList.remove('show');
             document.getElementById('hard-delete-overlay').classList.remove('show');
         }
->>>>>>> afa7b679f25f5c514e032b45d19f7f921d0c9067

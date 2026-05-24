@@ -757,18 +757,6 @@ body {
   background: #911b12;
 }
 
-<<<<<<< HEAD
-/* theme button */
-.theme-toggle {
-  padding: 9px 14px;
-  border: none;
-  border-radius: 8px;
-  background: #111827;
-  color: #ffffff;
-  font-size: 14px;
-  cursor: pointer;
-}
-=======
 /* restore button */
 .restore-btn {
   height: 34px;
@@ -785,4 +773,3 @@ body {
 .restore-btn:hover {
   background: #d6ebff;
 }
->>>>>>> afa7b679f25f5c514e032b45d19f7f921d0c9067

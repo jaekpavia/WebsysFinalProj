@@ -141,7 +141,6 @@ $search = $_GET['search'] ?? '';
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
-<<<<<<< HEAD
 
     $recentDocuments = $conn->query("
                 SELECT * FROM documents
@@ -153,20 +152,6 @@ if (!empty($search)) {
                 SELECT * FROM documents
                 ORDER BY date_submitted DESC
             ");
-=======
-    $recentDocuments = $conn->query("
-        SELECT * FROM documents
-        WHERE title LIKE '%$search%' AND is_deleted = 0
-        ORDER BY date_submitted DESC
-    ");
-} else {
-    $recentDocuments = $conn->query("
-        SELECT * FROM documents
-        WHERE is_deleted = 0
-        ORDER BY date_submitted DESC
-        LIMIT 5
-    ");
->>>>>>> afa7b679f25f5c514e032b45d19f7f921d0c9067
 }
 
 ?>
