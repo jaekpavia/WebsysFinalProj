@@ -85,3 +85,59 @@ function openDeleteModal(id, title) {
             document.getElementById('hard-delete-modal').classList.remove('show');
             document.getElementById('hard-delete-overlay').classList.remove('show');
         }
+        
+        /* =========================================
+   DARK MODE LOGIC
+   ========================================= */
+// Check if the user already chose dark mode in the past
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+    document.getElementById("theme-icon").textContent = "☀️";
+}
+
+function toggleDarkMode() {
+    const body = document.body;
+    const icon = document.getElementById("theme-icon");
+    
+    body.classList.toggle("dark-mode");
+    
+    // Save their preference to the browser so it remembers!
+    if (body.classList.contains("dark-mode")) {
+        localStorage.setItem("theme", "dark");
+        icon.textContent = "☀️";
+    } else {
+        localStorage.setItem("theme", "light");
+        icon.textContent = "🌙";
+    }
+}
+
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('document-file');
+const fileNameDisplay = document.getElementById('file-name-display');
+
+if (dropZone && fileInput) {
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        
+        if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            updateFileName(fileInput);
+        }
+    });
+}
+
+function updateFileName(input) {
+    if (input.files && input.files.length > 0) {
+        document.getElementById('file-name-display').textContent = "Selected: " + input.files[0].name;
+    }
+}

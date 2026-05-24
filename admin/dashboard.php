@@ -179,6 +179,7 @@ if (!empty($search)) {
             <div class="header-actions">
                 <a href="recycle_bin.php" class="details-btn" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Recycle Bin</a>
                 <button type="button" class="add-document-btn" onclick="openDocumentPanel()">Add Document</button>
+                <button type="button" class="theme-btn" onclick="toggleDarkMode()" id="theme-icon">🌙</button>
                 <a href="../logout.php" class="logout-btn">Logout</a>
             </div>
 
@@ -256,18 +257,10 @@ if (!empty($search)) {
                             <form class="status-form" action="dashboard.php" method="POST">
                                 <input type="hidden" name="document_id" value="<?php echo $document['id']; ?>">
 
-                                <select name="status" onchange="this.form.submit()">
-                                    <option value="Pending" <?php echo $document["status"] === "Pending" ? "selected" : ""; ?>>
-                                        Pending
-                                    </option>
-
-                                    <option value="In Process" <?php echo $document["status"] === "In Process" ? "selected" : ""; ?>>
-                                        In Process
-                                    </option>
-
-                                    <option value="Completed" <?php echo $document["status"] === "Completed" ? "selected" : ""; ?>>
-                                        Completed
-                                    </option>
+                                <select name="status" class="status-pill <?php echo 'status-' . strtolower(str_replace(' ', '-', $document['status'])); ?>" onchange="this.form.submit()">
+                                    <option value="Pending" <?php echo $document["status"] === "Pending" ? "selected" : ""; ?>>Pending</option>
+                                    <option value="In Process" <?php echo $document["status"] === "In Process" ? "selected" : ""; ?>>In Process</option>
+                                    <option value="Completed" <?php echo $document["status"] === "Completed" ? "selected" : ""; ?>>Completed</option>
                                 </select>
 
                                 <input type="hidden" name="update_status" value="1">
@@ -346,8 +339,31 @@ if (!empty($search)) {
             <label for="recipient">Recipient</label>
             <input type="text" id="recipient" name="recipient" placeholder="Enter recipient name or office" required>
 
-            <label for="document-file">Attach File</label>
-            <input type="file" id="document-file" name="document_file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+            <form class="document-form" action="dashboard.php" method="POST" enctype="multipart/form-data">
+            <label for="document-title">Document Title</label>
+            <input type="text" id="document-title" name="document_title" placeholder="Enter document title" required>
+
+            <label for="document-description">Description</label>
+            <textarea id="document-description" name="description" placeholder="Enter document description"></textarea>
+
+            <label for="sender">Sender</label>
+            <input type="text" id="sender" name="sender" placeholder="Enter sender name or office" required>
+
+            <label for="recipient">Recipient</label>
+            <input type="text" id="recipient" name="recipient" placeholder="Enter recipient name or office" required>
+
+            <label>Attach File</label>
+            <label for="document-file" class="upload-zone" id="drop-zone">
+                <span id="file-name-display">Drag & Drop your file here or Click to Browse</span>
+                <input type="file" id="document-file" name="document_file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="updateFileName(this)">
+            </label>
+        </div>
+
+    <div class="form-actions">
+        <button type="button" class="cancel-btn" onclick="closeDocumentPanel()">Cancel</button>
+        <button type="submit" name="add_document" class="save-btn">Save Document</button>
+    </div>
+</form>
 
             <div class="form-actions">
                 <button type="button" class="cancel-btn" onclick="closeDocumentPanel()">Cancel</button>
