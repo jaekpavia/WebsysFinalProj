@@ -320,7 +320,7 @@ if (!empty($search)) {
         <div class="panel-top">
             <div>
                 <h2>Add Document</h2>
-                <p>Create a new document record and attach a file.</p>
+                <p>Create a new document record or attach a file.</p>
             </div>
 
             <button type="button" class="close-panel-btn" onclick="closeDocumentPanel()">×</button>
@@ -339,31 +339,17 @@ if (!empty($search)) {
             <label for="recipient">Recipient</label>
             <input type="text" id="recipient" name="recipient" placeholder="Enter recipient name or office" required>
 
-            <form class="document-form" action="dashboard.php" method="POST" enctype="multipart/form-data">
-            <label for="document-title">Document Title</label>
-            <input type="text" id="document-title" name="document_title" placeholder="Enter document title" required>
-
-            <label for="document-description">Description</label>
-            <textarea id="document-description" name="description" placeholder="Enter document description"></textarea>
-
-            <label for="sender">Sender</label>
-            <input type="text" id="sender" name="sender" placeholder="Enter sender name or office" required>
-
-            <label for="recipient">Recipient</label>
-            <input type="text" id="recipient" name="recipient" placeholder="Enter recipient name or office" required>
-
             <label>Attach File</label>
             <label for="document-file" class="upload-zone" id="drop-zone">
                 <span id="file-name-display">Drag & Drop your file here or Click to Browse</span>
                 <input type="file" id="document-file" name="document_file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="updateFileName(this)">
             </label>
-        </div>
 
         <div class="form-actions">
-                <button type="button" class="cancel-btn" onclick="closeDocumentPanel()">Cancel</button>
-                <button type="submit" name="add_document" class="save-btn">Save Document</button>
-            </div>
-        </form>
+            <button type="button" class="cancel-btn" onclick="closeDocumentPanel()">Cancel</button>
+            <button type="submit" name="add_document" class="save-btn">Save Document</button>
+        </div>
+</form>
     </aside>
 
     <aside class="edit-document-panel" id="edit-document-panel">
@@ -460,7 +446,6 @@ if (!empty($search)) {
     </aside>
     <div class="delete-overlay" id="delete-overlay" onclick="closeDeleteModal()"></div>
 
-<<<<<<< HEAD
     <div class="delete-modal" id="delete-modal">
         <p>
             Are you sure you want to move
@@ -474,13 +459,6 @@ if (!empty($search)) {
                 <button type="submit" name="delete_document" class="delete-confirm-btn">Yes, Move to Recycle Bin</button>
             </div>
         </form>
-=======
-<div class="delete-modal" id="delete-modal">
-    <div>
-        <h2>Delete Document?</h2>
-        <p>Are you sure you want to delete <strong id="delete-doc-title"></strong>? This will put the file in the recycle bin.</p>
->>>>>>> afa7b679f25f5c514e032b45d19f7f921d0c9067
-    </div>
 
     <script src="script.js"></script>
 </body>
