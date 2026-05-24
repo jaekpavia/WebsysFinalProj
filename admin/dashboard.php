@@ -102,12 +102,12 @@ if (isset($_POST['edit_document'])) {
     $recipient = trim($_POST['edit_recipient']);
 
     if (!empty($_FILES['edit_document_file']['name'])) {
-        
+
         $getFile = $conn->prepare("SELECT file_path FROM documents WHERE id = ?");
         $getFile->bind_param("i", $documentId);
         $getFile->execute();
         $fileResult = $getFile->get_result();
-        
+
         if ($fileResult->num_rows > 0) {
             $fileData = $fileResult->fetch_assoc();
             if (!empty($fileData['file_path'])) {
@@ -154,22 +154,22 @@ $pendingDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE 
 $inProcessDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'In Process'")->fetch_assoc()['total'];
 $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'Completed'")->fetch_assoc()['total'];
 
-    $search = $_GET['search'] ?? '';
+$search = $_GET['search'] ?? '';
 
-        if (!empty($search)) {
-            $search = $conn->real_escape_string($search);
+if (!empty($search)) {
+    $search = $conn->real_escape_string($search);
 
-            $recentDocuments = $conn->query("
+    $recentDocuments = $conn->query("
                 SELECT * FROM documents
                 WHERE title LIKE '%$search%'
                 ORDER BY date_submitted DESC
             ");
-        } else {
-            $recentDocuments = $conn->query("
+} else {
+    $recentDocuments = $conn->query("
                 SELECT * FROM documents
                 ORDER BY date_submitted DESC
             ");
-        }
+}
 
 ?>
 
@@ -197,6 +197,7 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
                 <button type="button" class="add-document-btn" onclick="openDocumentPanel()">Add Document</button>
                 <a href="../logout.php" class="logout-btn">Logout</a>
             </div>
+
         </header>
 
         <section class="admin-card">
@@ -240,19 +241,19 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
 
         <section class="documents-panel">
             <div class="panel-header">
-                
+
                 <div>
                     <h2>All Documents</h2>
                     <p>Latest document records will appear here.</p>
                 </div>
 
-                 <form method="GET" action="" class="search-bar">
+                <form method="GET" action="" class="search-bar">
                     <input type="text" class="search" name="search" placeholder="Search document..." value="<?php echo htmlspecialchars($search); ?>">
                     <button type="submit">Search</button>
-                 </form>
+                </form>
             </div>
 
-           
+
 
             <div class="document-list">
                 <?php if ($recentDocuments->num_rows === 0) { ?>
@@ -293,9 +294,9 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
                             <div class="document-actions">
 
                                 <button
-                                     type="button"
-                                     class="edit-btn"
-                                     onclick='openEditPanel(
+                                    type="button"
+                                    class="edit-btn"
+                                    onclick='openEditPanel(
                                         <?php echo json_encode($document["id"]); ?>,
                                         <?php echo json_encode($document["title"]); ?>,
                                         <?php echo json_encode($document["description"]); ?>,
@@ -320,12 +321,12 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
                                     View Details
                                 </button>
 
-                            <button 
-                                type="button" 
-                                class="delete-btn" 
-                                onclick="openDeleteModal(<?php echo $document['id']; ?>, '<?php echo htmlspecialchars($document['title'], ENT_QUOTES, 'UTF-8'); ?>')">
-                                Delete
-                            </button>
+                                <button
+                                    type="button"
+                                    class="delete-btn"
+                                    onclick="openDeleteModal(<?php echo $document['id']; ?>, '<?php echo htmlspecialchars($document['title'], ENT_QUOTES, 'UTF-8'); ?>')">
+                                    Delete
+                                </button>
 
                             </div>
                         </div>
@@ -372,37 +373,37 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
     </aside>
 
     <aside class="edit-document-panel" id="edit-document-panel">
-    <div class="panel-top">
-        <div>
-            <h2>Edit Document</h2>
-            <p>Update the details or replace the attached file.</p>
+        <div class="panel-top">
+            <div>
+                <h2>Edit Document</h2>
+                <p>Update the details or replace the attached file.</p>
+            </div>
+            <button type="button" class="close-panel-btn" onclick="closeEditPanel()">×</button>
         </div>
-        <button type="button" class="close-panel-btn" onclick="closeEditPanel()">×</button>
-    </div>
 
-    <form class="document-form" action="dashboard.php" method="POST" enctype="multipart/form-data">
-        <input type="hidden" id="edit-id" name="edit_document_id">
+        <form class="document-form" action="dashboard.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" id="edit-id" name="edit_document_id">
 
-        <label for="edit-title">Document Title</label>
-        <input type="text" id="edit-title" name="edit_document_title" required>
+            <label for="edit-title">Document Title</label>
+            <input type="text" id="edit-title" name="edit_document_title" required>
 
-        <label for="edit-description">Description</label>
-        <textarea id="edit-description" name="edit_description"></textarea>
+            <label for="edit-description">Description</label>
+            <textarea id="edit-description" name="edit_description"></textarea>
 
-        <label for="edit-sender">Sender</label>
-        <input type="text" id="edit-sender" name="edit_sender" required>
+            <label for="edit-sender">Sender</label>
+            <input type="text" id="edit-sender" name="edit_sender" required>
 
-        <label for="edit-recipient">Recipient</label>
-        <input type="text" id="edit-recipient" name="edit_recipient" required>
+            <label for="edit-recipient">Recipient</label>
+            <input type="text" id="edit-recipient" name="edit_recipient" required>
 
-        <label for="edit-file">Replace File (Leave blank to keep current file)</label>
-        <input type="file" id="edit-file" name="edit_document_file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+            <label for="edit-file">Replace File (Leave blank to keep current file)</label>
+            <input type="file" id="edit-file" name="edit_document_file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
 
-        <div class="form-actions">
-            <button type="button" class="cancel-btn" onclick="closeEditPanel()">Cancel</button>
-            <button type="submit" name="edit_document" class="save-btn">Save Changes</button>
-        </div>
-    </form>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="closeEditPanel()">Cancel</button>
+                <button type="submit" name="edit_document" class="save-btn">Save Changes</button>
+            </div>
+        </form>
     </aside>
 
     <div class="details-overlay" id="details-overlay" onclick="closeDetailsPanel()"></div>
@@ -458,27 +459,29 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
             </div>
 
             <div class="detail-item">
-            <span>Attached File</span>
-            <p id="detail-file"></p>
+                <span>Attached File</span>
+                <p id="detail-file"></p>
+            </div>
         </div>
+    </aside>
+    <div class="delete-overlay" id="delete-overlay" onclick="closeDeleteModal()"></div>
+
+    <div class="delete-modal" id="delete-modal">
+        <p>
+            Are you sure you want to move
+            <strong id="delete-doc-title"></strong>
+            to the recycle bin? You can restore it later if needed.
+        </p>
+        <form action="dashboard.php" method="POST">
+            <input type="hidden" id="delete-id" name="document_id">
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="closeDeleteModal()">Cancel</button>
+                <button type="submit" name="delete_document" class="delete-confirm-btn">Yes, Move to Recycle Bin</button>
+            </div>
+        </form>
     </div>
-    </aside> <div class="delete-overlay" id="delete-overlay" onclick="closeDeleteModal()"></div>
 
-<div class="delete-modal" id="delete-modal">
-    <div>
-        <h2>Delete Document?</h2>
-        <p>Are you sure you want to delete <strong id="delete-doc-title"></strong>? This action cannot be undone.</p>
-    </div>
-
-    <form action="dashboard.php" method="POST">
-        <input type="hidden" id="delete-id" name="document_id">
-        <div class="form-actions">
-            <button type="button" class="cancel-btn" onclick="closeDeleteModal()">Cancel</button>
-            <button type="submit" name="delete_document" class="delete-confirm-btn">Yes, Delete</button>
-        </div>
-    </form>
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
