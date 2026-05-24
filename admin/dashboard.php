@@ -143,15 +143,16 @@ if (!empty($search)) {
     $search = $conn->real_escape_string($search);
 
     $recentDocuments = $conn->query("
-                SELECT * FROM documents
-                WHERE title LIKE '%$search%'
-                ORDER BY date_submitted DESC
-            ");
+        SELECT * FROM documents
+        WHERE title LIKE '%$search%' AND is_deleted = 0
+        ORDER BY date_submitted DESC
+    ");
 } else {
     $recentDocuments = $conn->query("
-                SELECT * FROM documents
-                ORDER BY date_submitted DESC
-            ");
+        SELECT * FROM documents
+        WHERE is_deleted = 0
+        ORDER BY date_submitted DESC
+    ");
 }
 
 ?>
