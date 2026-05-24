@@ -141,3 +141,18 @@ function updateFileName(input) {
         document.getElementById('file-name-display').textContent = "Selected: " + input.files[0].name;
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loader = document.getElementById("login-loader");
+
+    if (loader) {
+        if (!sessionStorage.getItem("hasSeenLoader")) {
+            setTimeout(() => {
+                loader.classList.add("fade-out");
+                sessionStorage.setItem("hasSeenLoader", "true");
+            }, 3000); 
+        } else {
+            loader.style.display = "none";
+        }
+    }
+});

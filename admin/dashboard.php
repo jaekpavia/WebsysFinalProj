@@ -168,6 +168,11 @@ if (!empty($search)) {
 
 <body>
 
+    <div class="loader-overlay" id="login-loader">
+        <div class="spinner"></div>
+        <h2 class="loader-text">Entering a safe environment...</h2>
+    </div>
+
     <main class="main-content">
 
         <header class="page-header">
