@@ -757,6 +757,7 @@ body {
   background: #911b12;
 }
 
+<<<<<<< HEAD
 /* theme button */
 .theme-toggle {
   padding: 9px 14px;
@@ -767,3 +768,21 @@ body {
   font-size: 14px;
   cursor: pointer;
 }
+=======
+/* restore button */
+.restore-btn {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #cce5ff;
+  background: #e8f4ff;
+  color: #004085;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.restore-btn:hover {
+  background: #d6ebff;
+}
+>>>>>>> afa7b679f25f5c514e032b45d19f7f921d0c9067

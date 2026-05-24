@@ -22,26 +22,9 @@ if (isset($_POST['update_status'])) {
 if (isset($_POST['delete_document'])) {
     $documentId = $_POST['document_id'];
 
-    $getFile = $conn->prepare("SELECT file_path FROM documents WHERE id = ?");
-    $getFile->bind_param("i", $documentId);
-    $getFile->execute();
-    $fileResult = $getFile->get_result();
-
-    if ($fileResult->num_rows > 0) {
-        $fileData = $fileResult->fetch_assoc();
-
-        if (!empty($fileData['file_path'])) {
-            $realFilePath = "../" . $fileData['file_path'];
-
-            if (file_exists($realFilePath)) {
-                unlink($realFilePath);
-            }
-        }
-    }
-
-    $deleteDocument = $conn->prepare("DELETE FROM documents WHERE id = ?");
-    $deleteDocument->bind_param("i", $documentId);
-    $deleteDocument->execute();
+    $softDelete = $conn->prepare("UPDATE documents SET is_deleted = 1 WHERE id = ?");
+    $softDelete->bind_param("i", $documentId);
+    $softDelete->execute();
 
     header("Location: dashboard.php");
     exit();
@@ -149,15 +132,16 @@ if (isset($_POST['edit_document'])) {
 $pageTitle = "Dashboard";
 $adminName = $_SESSION['name'] ?? "Admin";
 
-$totalDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents")->fetch_assoc()['total'];
-$pendingDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'Pending'")->fetch_assoc()['total'];
-$inProcessDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'In Process'")->fetch_assoc()['total'];
-$completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'Completed'")->fetch_assoc()['total'];
+$totalDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE is_deleted = 0")->fetch_assoc()['total'];
+$pendingDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'Pending' AND is_deleted = 0")->fetch_assoc()['total'];
+$inProcessDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'In Process' AND is_deleted = 0")->fetch_assoc()['total'];
+$completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHERE status = 'Completed' AND is_deleted = 0")->fetch_assoc()['total'];
 
 $search = $_GET['search'] ?? '';
 
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
+<<<<<<< HEAD
 
     $recentDocuments = $conn->query("
                 SELECT * FROM documents
@@ -169,6 +153,20 @@ if (!empty($search)) {
                 SELECT * FROM documents
                 ORDER BY date_submitted DESC
             ");
+=======
+    $recentDocuments = $conn->query("
+        SELECT * FROM documents
+        WHERE title LIKE '%$search%' AND is_deleted = 0
+        ORDER BY date_submitted DESC
+    ");
+} else {
+    $recentDocuments = $conn->query("
+        SELECT * FROM documents
+        WHERE is_deleted = 0
+        ORDER BY date_submitted DESC
+        LIMIT 5
+    ");
+>>>>>>> afa7b679f25f5c514e032b45d19f7f921d0c9067
 }
 
 ?>
@@ -194,6 +192,7 @@ if (!empty($search)) {
             </div>
 
             <div class="header-actions">
+                <a href="recycle_bin.php" class="details-btn" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Recycle Bin</a>
                 <button type="button" class="add-document-btn" onclick="openDocumentPanel()">Add Document</button>
                 <a href="../logout.php" class="logout-btn">Logout</a>
             </div>
@@ -466,6 +465,7 @@ if (!empty($search)) {
     </aside>
     <div class="delete-overlay" id="delete-overlay" onclick="closeDeleteModal()"></div>
 
+<<<<<<< HEAD
     <div class="delete-modal" id="delete-modal">
         <p>
             Are you sure you want to move
@@ -479,6 +479,12 @@ if (!empty($search)) {
                 <button type="submit" name="delete_document" class="delete-confirm-btn">Yes, Move to Recycle Bin</button>
             </div>
         </form>
+=======
+<div class="delete-modal" id="delete-modal">
+    <div>
+        <h2>Delete Document?</h2>
+        <p>Are you sure you want to delete <strong id="delete-doc-title"></strong>? This will put the file in the recycle bin.</p>
+>>>>>>> afa7b679f25f5c514e032b45d19f7f921d0c9067
     </div>
 
     <script src="script.js"></script>
