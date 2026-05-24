@@ -58,6 +58,7 @@ if (isset($_POST['add_document'])) {
     $fileName = null;
     $filePath = null;
 
+<<<<<<< HEAD
     if (isset($_POST['edit_document'])) {
     $documentId = $_POST['edit_document_id'];
     $title = trim($_POST['edit_document_title']);
@@ -110,6 +111,8 @@ if (isset($_POST['add_document'])) {
     exit();
 }
 
+=======
+>>>>>>> fa686ebf399ade0ee96734db003bfcbcb622c0a9
     if (!empty($_FILES['document_file']['name'])) {
         $uploadFolder = "../uploads/documents/";
 
@@ -303,6 +306,7 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
                             <span><?php echo htmlspecialchars($document["date_submitted"]); ?></span>
 
                             <div class="document-actions">
+<<<<<<< HEAD
 
                                 <button
                                      type="button"
@@ -316,6 +320,8 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
                                     )'>
                                     Edit
                                 </button>
+=======
+>>>>>>> fa686ebf399ade0ee96734db003bfcbcb622c0a9
                                 <button
                                     type="button"
                                     class="details-btn"
@@ -345,7 +351,11 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
 
     </main>
 
+<<<<<<< HEAD
     <div class="panel-overlay" id="panel-overlay" onclick="closeDocumentPanel(); closeEditPanel(); closeDetailsPanel()"></div>
+=======
+    <div class="panel-overlay" id="panel-overlay" onclick="closeDocumentPanel()"></div>
+>>>>>>> fa686ebf399ade0ee96734db003bfcbcb622c0a9
 
     <aside class="add-document-panel" id="add-document-panel">
         <div class="panel-top">
@@ -380,6 +390,7 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
         </form>
     </aside>
 
+<<<<<<< HEAD
     <aside class="edit-document-panel" id="edit-document-panel">
     <div class="panel-top">
         <div>
@@ -414,6 +425,8 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
     </form>
     </aside>
 
+=======
+>>>>>>> fa686ebf399ade0ee96734db003bfcbcb622c0a9
     <div class="details-overlay" id="details-overlay" onclick="closeDetailsPanel()"></div>
 
     <aside class="details-panel" id="details-panel">

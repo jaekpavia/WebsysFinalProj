@@ -32,6 +32,7 @@
             document.getElementById("details-panel").classList.remove("show");
             document.getElementById("details-overlay").classList.remove("show");
         }
+<<<<<<< HEAD
 
         function openEditPanel(id, title, desc, sender, recipient) {
             document.getElementById('edit-id').value = id;
@@ -48,3 +49,5 @@
             document.getElementById('edit-document-panel').classList.remove('show');
             document.getElementById('panel-overlay').classList.remove('show');
         }
+=======
+>>>>>>> fa686ebf399ade0ee96734db003bfcbcb622c0a9

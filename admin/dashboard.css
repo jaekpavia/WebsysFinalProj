@@ -628,6 +628,7 @@ body {
 /* hover */
 .search-bar button:hover {
   background: #0b3d26;
+<<<<<<< HEAD
 }
 
 /* edit button */
@@ -666,4 +667,6 @@ body {
 
 .edit-document-panel.show {
   transform: translateX(0);
+=======
+>>>>>>> fa686ebf399ade0ee96734db003bfcbcb622c0a9
 }
