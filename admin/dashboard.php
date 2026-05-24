@@ -53,12 +53,48 @@ if (isset($_POST['add_document'])) {
     $description = trim($_POST['description']);
     $sender = trim($_POST['sender']);
     $recipient = trim($_POST['recipient']);
-    $status = $_POST['status'];
+    $status = "Pending";
 
     $fileName = null;
     $filePath = null;
 
-    if (isset($_POST['edit_document'])) {
+    if (!empty($_FILES['document_file']['name'])) {
+        $uploadFolder = "../uploads/documents/";
+
+        if (!is_dir($uploadFolder)) {
+            mkdir($uploadFolder, 0777, true);
+        }
+
+        $originalFileName = basename($_FILES['document_file']['name']);
+        $fileExtension = strtolower(pathinfo($originalFileName, PATHINFO_EXTENSION));
+
+        $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
+
+        if (in_array($fileExtension, $allowedExtensions)) {
+            $safeFileName = "DOC_" . time() . "_" . rand(1000, 9999) . "." . $fileExtension;
+            $targetFile = $uploadFolder . $safeFileName;
+
+            if (move_uploaded_file($_FILES['document_file']['tmp_name'], $targetFile)) {
+                $fileName = $originalFileName;
+                $filePath = "uploads/documents/" . $safeFileName;
+            }
+        }
+    }
+
+    $insertDocument = $conn->prepare("
+        INSERT INTO documents 
+        (tracking_number, title, description, sender, recipient, status, file_name, file_path) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ");
+
+    $insertDocument->bind_param("ssssssss", $trackingNumber, $title, $description, $sender, $recipient, $status, $fileName, $filePath);
+    $insertDocument->execute();
+
+    header("Location: dashboard.php");
+    exit();
+}
+
+if (isset($_POST['edit_document'])) {
     $documentId = $_POST['edit_document_id'];
     $title = trim($_POST['edit_document_title']);
     $description = trim($_POST['edit_description']);
@@ -105,53 +141,6 @@ if (isset($_POST['add_document'])) {
         $updateDoc->bind_param("ssssi", $title, $description, $sender, $recipient, $documentId);
         $updateDoc->execute();
     }
-
-    header("Location: dashboard.php");
-    exit();
-}
-
-    if (!empty($_FILES['document_file']['name'])) {
-        $uploadFolder = "../uploads/documents/";
-
-        if (!is_dir($uploadFolder)) {
-            mkdir($uploadFolder, 0777, true);
-        }
-
-        $originalFileName = basename($_FILES['document_file']['name']);
-        $fileExtension = strtolower(pathinfo($originalFileName, PATHINFO_EXTENSION));
-
-        $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
-
-        if (in_array($fileExtension, $allowedExtensions)) {
-            $safeFileName = "DOC_" . time() . "_" . rand(1000, 9999) . "." . $fileExtension;
-            $targetFile = $uploadFolder . $safeFileName;
-
-            if (move_uploaded_file($_FILES['document_file']['tmp_name'], $targetFile)) {
-                $fileName = $originalFileName;
-                $filePath = "uploads/documents/" . $safeFileName;
-            }
-        }
-    }
-
-    $insertDocument = $conn->prepare("
-        INSERT INTO documents 
-        (tracking_number, title, description, sender, recipient, status, file_name, file_path) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    ");
-
-    $insertDocument->bind_param(
-        "ssssssss",
-        $trackingNumber,
-        $title,
-        $description,
-        $sender,
-        $recipient,
-        $status,
-        $fileName,
-        $filePath
-    );
-
-    $insertDocument->execute();
 
     header("Location: dashboard.php");
     exit();
