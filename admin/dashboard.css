@@ -779,7 +779,7 @@ select.status-pill {
   border-radius: 20px !important;
   font-weight: 600 !important;
   text-align: center !important;
-  border: 2px solid transparent !important;s
+  border: 2px solid transparent !important;
 }
 
 .status-form select.status-pending { background: #fff3cd !important; color: #856404 !important; border-color: #ffeeba !important; }
