@@ -320,10 +320,13 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
                                     View Details
                                 </button>
 
-                                <form action="dashboard.php" method="POST" onsubmit="return confirm('Delete this document?');">
-                                    <input type="hidden" name="document_id" value="<?php echo $document['id']; ?>">
-                                    <button type="submit" name="delete_document" class="delete-btn">Delete</button>
-                                </form>
+                            <button 
+                                type="button" 
+                                class="delete-btn" 
+                                onclick="openDeleteModal(<?php echo $document['id']; ?>, '<?php echo htmlspecialchars($document['title'], ENT_QUOTES, 'UTF-8'); ?>')">
+                                Delete
+                            </button>
+
                             </div>
                         </div>
                     <?php } ?>
@@ -455,13 +458,27 @@ $completedDocuments = $conn->query("SELECT COUNT(*) AS total FROM documents WHER
             </div>
 
             <div class="detail-item">
-                <span>Attached File</span>
-                <p id="detail-file"></p>
-            </div>
+            <span>Attached File</span>
+            <p id="detail-file"></p>
         </div>
-    </aside>
+    </div>
+    </aside> <div class="delete-overlay" id="delete-overlay" onclick="closeDeleteModal()"></div>
 
-    <script src="script.js"></script>
+<div class="delete-modal" id="delete-modal">
+    <div>
+        <h2>Delete Document?</h2>
+        <p>Are you sure you want to delete <strong id="delete-doc-title"></strong>? This action cannot be undone.</p>
+    </div>
+
+    <form action="dashboard.php" method="POST">
+        <input type="hidden" id="delete-id" name="document_id">
+        <div class="form-actions">
+            <button type="button" class="cancel-btn" onclick="closeDeleteModal()">Cancel</button>
+            <button type="submit" name="delete_document" class="delete-confirm-btn">Yes, Delete</button>
+        </div>
+    </form>
+</div>
+
+<script src="script.js"></script>
 </body>
-
 </html>

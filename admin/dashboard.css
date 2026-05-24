@@ -685,3 +685,74 @@ body {
 .edit-document-panel.show {
   transform: translateX(0);
 }
+
+/* delete modal overlay */
+.delete-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(24, 24, 24, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s ease;
+  z-index: 1050;
+}
+
+.delete-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* delete modal container */
+.delete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  background: #ffffff;
+  border: 1px solid #e1e1dc;
+  border-radius: 16px;
+  padding: 24px;
+  width: min(400px, calc(100% - 32px));
+  z-index: 1100;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s ease;
+  text-align: center;
+}
+
+.delete-modal.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* modal text */
+.delete-modal h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #b42318;
+}
+
+.delete-modal p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+/* bold red confirm button */
+.delete-confirm-btn {
+  flex: 1;
+  height: 44px;
+  border: none;
+  background: #b42318;
+  color: #ffffff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-confirm-btn:hover {
+  background: #911b12;
+}

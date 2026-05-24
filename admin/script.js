@@ -48,3 +48,16 @@
             document.getElementById('edit-document-panel').classList.remove('show');
             document.getElementById('panel-overlay').classList.remove('show');
         }
+
+        function openDeleteModal(id, title) {
+            document.getElementById('delete-id').value = id;
+            document.getElementById('delete-doc-title').textContent = title;
+    
+            document.getElementById('delete-modal').classList.add('show');
+            document.getElementById('delete-overlay').classList.add('show');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').classList.remove('show');
+            document.getElementById('delete-overlay').classList.remove('show');
+        }
