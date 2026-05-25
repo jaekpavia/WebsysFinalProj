@@ -967,3 +967,10 @@ body.dark-mode .search-bar .search {
 body.dark-mode .search-bar .search::placeholder {
   color: #a0a0a0 !important;
 }
+body.dark-mode #details-panel p {
+  color: #ffffff !important;
+}
+
+body.dark-mode #details-panel span {
+  color: #bbbbbb !important;
+}

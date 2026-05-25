@@ -407,46 +407,46 @@ if (!empty($search)) {
         <div class="details-card">
             <div class="detail-item">
                 <span>Tracking Number</span>
-                <p id="detail-tracking-number"></p>
+                <p class="detail-value" id="detail-tracking-number"></p>
             </div>
 
             <div class="detail-item">
                 <span>Document Title</span>
-                <p id="detail-title"></p>
+                <p class="detail-value" id="detail-title"></p>
             </div>
 
             <div class="detail-item">
                 <span>Description</span>
-                <p id="detail-description"></p>
+                <p class="detail-value" id="detail-description"></p>
             </div>
 
             <div class="detail-grid">
                 <div class="detail-item">
                     <span>Sender</span>
-                    <p id="detail-sender"></p>
+                    <p class="detail-value" id="detail-sender"></p>
                 </div>
 
                 <div class="detail-item">
                     <span>Recipient</span>
-                    <p id="detail-recipient"></p>
+                    <p class="detail-value" id="detail-recipient"></p>
                 </div>
             </div>
 
             <div class="detail-grid">
                 <div class="detail-item">
                     <span>Status</span>
-                    <p id="detail-status"></p>
+                    <p class="detail-value" id="detail-status"></p>
                 </div>
 
                 <div class="detail-item">
                     <span>Date Submitted</span>
-                    <p id="detail-date"></p>
+                    <p class="detail-value" id="detail-date"></p>
                 </div>
             </div>
 
             <div class="detail-item">
                 <span>Attached File</span>
-                <p id="detail-file"></p>
+                <p class="detail-value" id="detail-file"></p>
             </div>
         </div>
     </aside>

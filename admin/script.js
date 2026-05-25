@@ -35,6 +35,44 @@ function openDetailsPanel(
     document.getElementById("detail-file").textContent = "No file attached.";
   }
 
+  // Ensure detail values are visible in dark mode (inline fallback)
+  const detailIds = [
+    "detail-tracking-number",
+    "detail-title",
+    "detail-description",
+    "detail-sender",
+    "detail-recipient",
+    "detail-status",
+    "detail-date",
+    "detail-file",
+  ];
+
+  if (document.body.classList.contains("dark-mode")) {
+    detailIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.color = "#ffffff";
+        // also force link color inside file element
+        if (id === "detail-file") {
+          const a = el.querySelector("a");
+          if (a) a.style.color = "#ffffff";
+        }
+      }
+    });
+  } else {
+    // remove inline styles so CSS can control appearance
+    detailIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.color = "";
+        if (id === "detail-file") {
+          const a = el.querySelector("a");
+          if (a) a.style.color = "";
+        }
+      }
+    });
+  }
+
   document.getElementById("details-panel").classList.add("show");
   document.getElementById("details-overlay").classList.add("show");
 }
